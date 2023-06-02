@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from '../Card/Card.js';
-import {CurrentUserContext} from '../contexts/CurrentUserContext';
-import { CurrentCards } from '../contexts/CurrentCards.js';
+import {CurrentUserContext} from '../../contexts/CurrentUserContext';
+import { CurrentCards } from '../../contexts/CurrentCards.js';
 
 function Main (props) {
 
