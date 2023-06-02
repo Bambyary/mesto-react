@@ -27,7 +27,7 @@ class Api {
             method: 'POST',
             headers: this._headers,
             body: JSON.stringify({
-                name: card.title,
+                name: card.name,
                 link: card.link
             })
         })
@@ -45,13 +45,13 @@ class Api {
         })
     }
 
-    editUserInfo(name, about) {
+    editUserInfo(userData) {
         return fetch (`${this._baseUrl}/users/me`, {
             method: "PATCH",
             headers: this._headers,
             body: JSON.stringify({
-                name,
-                about
+                name: userData.name,
+                about: userData.about
             })
         })
         .then(response => {
@@ -69,22 +69,11 @@ class Api {
         })
     }
 
-    addLike (cardId) {
+    changeLikeCardStatus (cardId, isLiked) {
         return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-            method: "PUT",
+            method: !isLiked ? 'PUT' : 'DELETE',
             headers: this._headers
-        })
-        .then(response => {
-            return this._getResponseData(response);
-        })
-    }
-
-    deleteLike (cardId) {
-        return fetch (`${this._baseUrl}/cards/${cardId}/likes`, {
-            method: "DELETE",
-            headers: this._headers
-        })
-        .then(response => {
+        }).then(response => {
             return this._getResponseData(response);
         })
     }
