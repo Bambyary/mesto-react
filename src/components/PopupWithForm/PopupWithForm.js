@@ -2,6 +2,29 @@ import React from 'react';
 
 function PopupWithForm (props) {
 
+    React.useEffect (() => {
+
+        const escClose = (e) => {
+            if (e.key === 'Escape') {
+                props.onClose();
+            }
+        }
+
+        const closeOnBackground = (e) => {
+            if (e.target.classList.contains('popup__button-exit') || e.target.classList.contains('popup')){
+                props.onClose();
+            }
+        }
+
+        window.addEventListener('keydown', escClose);
+        window.addEventListener('mousedown', closeOnBackground);
+
+        return () => {
+            window.removeEventListener('keydown', escClose)
+            window.removeEventListener('mousedown', closeOnBackground);
+        }
+    }, [props])
+
     return (
         <div className={`popup ${props.isOpen && `popup_opened`}`} id={props.name}>
             <div className="popup__container">
