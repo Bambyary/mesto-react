@@ -10,7 +10,7 @@ function PopupWithForm (props) {
                     onSubmit={props.handleSubmit} noValidate>
                     <fieldset className="popup__fieldset">
                         {props.children}
-                        <button className="popup__button-save" type="submit" id="popup__button-save-add">{props.textButton}</button>
+                        <button className={`popup__button-save ${!props.isFormValid && 'popup__button-save_inactive'}`} type="submit" id="popup__button-save-add">{props.textButton}</button>
                     </fieldset>
                 </form>
                 <button className="popup__button-exit" type="button"

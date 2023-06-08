@@ -5,10 +5,32 @@ function EditAvatarPopup (props) {
 
     const [avatar, setAvatar] = React.useState('');
     const inputRef = React.useRef();
+    const [avatarValidity, setAvatarValidity] = React.useState({
+        avatarLinkValid: false
+    });
+    const [avatarError, setAvatarError] = React.useState('');
 
     React.useEffect(() => {
         setAvatar('');
     }, [props.isOpen])
+
+    React.useEffect(() => {
+        const httpRegex = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+        const avatarValid = avatar !== undefined && httpRegex.test(avatar);
+
+        setAvatarError(() => {
+            
+            if (avatar === '') {
+                return 'Введите ссылку на картинку'
+            } else if (avatar !== '' && !avatarValid) {
+                return 'Введена некорректная ссылка'
+            }
+        })
+
+        setAvatarValidity(() => ({
+            avatarLinkValid: avatarValid
+        }))
+    }, [avatar, setAvatarValidity])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -26,18 +48,18 @@ function EditAvatarPopup (props) {
 
     return (
         <PopupWithForm name='form-avatar' title='Обновить аватар' textButton={props.isLoading ? 'Сохранение...' : 'Сохранить'} 
-            isOpen={props.isOpen} onClose={props.onClose} handleSubmit={handleSubmit}>
+            isOpen={props.isOpen} onClose={props.onClose} handleSubmit={handleSubmit} isFormValid={avatarValidity.avatarLinkValid}>
                         <label htmlFor="popup__input-avatar-pictire">
                             <input 
                             ref={inputRef}
                             onChange={handleAvatarChange} 
-                            className="popup__input popup__input_type_avatar" 
+                            className={`popup__input popup__input_type_avatar ${!avatarValidity.avatarLinkValid && 'popup__input_type_error'}`} 
                             id="popup__input-avatar-pictire" 
                             minLength="2" name="avatar" 
                             type="text" placeholder="Введите ссылку" 
                             value={'' || avatar} 
                             required />
-                            <span className="popup__input-error popup__input-avatar-pictire-error"></span>
+                            <span className={`popup__input-error popup__input-avatar-pictire-error ${!avatarValidity.avatarLinkValid && 'popup__input-error_active'}`}>{avatarError}</span>
                         </label>
         </PopupWithForm>
     )
