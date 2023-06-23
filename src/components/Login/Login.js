@@ -93,7 +93,7 @@ function Login (props) {
 
     return (
         <>
-            <Header buttonText='Регистрация' path='/sign-up'/>
+            <Header buttonText='Р' path='/sign-up'/>
             <FormRegistration name='form-login' title='Вход' textButton='Войти'
                 handleSubmit={handleSubmit}
                 isFormValid={formValid}>
