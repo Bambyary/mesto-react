@@ -4,6 +4,17 @@
 
 @import url(../src/block/header/header.css);
 @import url(../src/block/header/__logo/header__logo.css);
+@import url(../src/block/header/__menu/header__menu.css);
+@import url(../src/block/header/__email/header__email.css);
+@import url(../src/block/header/__button/header__button.css);
+@import url(../src/block/header/__button-burger/header__button-burger.css);
+@import url(../src/block/header/__button-burger-item/header__button-burger-item.css);
+@import url(../src/block/header/__menu-burger/header__menu-burger.css);
+@import url(../src/block/header/__menu-burger/_inactive/header__menu-burger_inactive.css);
+@import url(../src/block/header/__burger-email/header__burger-email.css);
+@import url(../src/block/header/__button-burger-exit/header__button-burger-exit.css);
+@import url(../src/block/header/__button-burger-close/header__button-burger-close.css);
+@import url(../src/block/header/__button/_inactive/header__button_inactive.css);
 
 @import url(../src/block/profile/profile.css);
 @import url(../src/block/profile/__avatar/profile__avatar.css);
@@ -51,5 +62,22 @@
 @import url(../src/block/popup/__button-save/_inactive/popup__button-save_inactive.css);
 @import url(../src/block/popup/__input-error/_active/popup__input-error_active.css);
 @import url(../src/block/popup/__title/_confirm/popup__title_confirm.css);
+@import url(../src/block/popup/__mark/popup__mark.css);
+@import url(../src/block/popup/__title/_mark/popup__title_mark.css);
+@import url(../src/block/popup/__mark/_ok/popup__mark_ok.css);
+@import url(../src/block/popup/__mark/_error/popup__mark_error.css);
 
 @import url(../src/block/main/main.css);
+
+@import url(../src/block/registration/registration.css);
+@import url(../src/block/registration/__container/registration__container.css);
+@import url(../src/block/registration/__title/registration__title.css);
+@import url(../src/block/registration/__form/registration__form.css);
+@import url(../src/block/registration/__fieldset/registration__fieldset.css);
+@import url(../src/block/registration/__button-save/registration__button-save.css);
+@import url(../src/block/registration/__button-save/_inactive/registration__button-save_inactive.css);
+@import url(../src/block/registration/__input/registration__input.css);
+@import url(../src/block/registration/__input/_type/registration__input_type_error.css);
+@import url(../src/block/registration/__input-error/registration__input-error.css);
+@import url(../src/block/registration/__input-error/_active/registration__input-error_active.css);
+@import url(../src/block/registration/__link-login/registration__link-login.css);

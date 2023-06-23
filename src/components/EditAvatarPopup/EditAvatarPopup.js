@@ -9,6 +9,7 @@ function EditAvatarPopup (props) {
         avatarLinkValid: false
     });
     const [avatarError, setAvatarError] = React.useState('');
+    const [isFocused, setIsFocused] = React.useState(false);
 
     React.useEffect(() => {
         setAvatar('');
@@ -19,8 +20,9 @@ function EditAvatarPopup (props) {
         const avatarValid = avatar !== undefined && httpRegex.test(avatar);
 
         setAvatarError(() => {
-            
-            if (avatar === '') {
+            if (!isFocused) {
+                setAvatarError('')
+            } else if (avatar === '') {
                 return 'Введите ссылку на картинку'
             } else if (avatar !== '' && !avatarValid) {
                 return 'Введена некорректная ссылка'
@@ -30,7 +32,7 @@ function EditAvatarPopup (props) {
         setAvatarValidity(() => ({
             avatarLinkValid: avatarValid
         }))
-    }, [avatar, setAvatarValidity])
+    }, [avatar, setAvatarValidity, setIsFocused])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -46,14 +48,24 @@ function EditAvatarPopup (props) {
         setAvatar(e.target.value);
     }
 
+    function handleFocus () {
+        setIsFocused(true);
+    }
+
+    function handleBlur () {
+        setIsFocused(false);
+    }
+
     return (
         <PopupWithForm name='form-avatar' title='Обновить аватар' textButton={props.isLoading ? 'Сохранение...' : 'Сохранить'} 
             isOpen={props.isOpen} onClose={props.onClose} handleSubmit={handleSubmit} isFormValid={avatarValidity.avatarLinkValid}>
                         <label htmlFor="popup__input-avatar-pictire">
                             <input 
                             ref={inputRef}
-                            onChange={handleAvatarChange} 
-                            className={`popup__input popup__input_type_avatar ${!avatarValidity.avatarLinkValid && 'popup__input_type_error'}`} 
+                            onChange={handleAvatarChange}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur} 
+                            className={`popup__input popup__input_type_avatar ${!avatarValidity.avatarLinkValid && isFocused && 'popup__input_type_error'}`} 
                             id="popup__input-avatar-pictire" 
                             minLength="2" name="avatar" 
                             type="text" placeholder="Введите ссылку" 

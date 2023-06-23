@@ -16,6 +16,7 @@ function EditProfilePopup (props) {
     const formValid = userValidity === true && descriptionValidity === true;
     const [nameError, setNameError] = React.useState(null);
     const [descriptionError, setDescriptionError] = React.useState(null);
+    const [isFocused, setIsFocused] = React.useState(false);
 
     React.useEffect(() => {
         setName(currentUser.name);
@@ -27,8 +28,9 @@ function EditProfilePopup (props) {
         const isDescriptionValid = description !== undefined && description.length > 1;
 
         setNameError(() => {
-            
-            if (name === '') {
+            if (!isFocused) {
+                return setNameError('');
+            }else if (name === '') {
                 return 'Введите имя'
             } else if (name !== '' && !isUserNameValid) {
                 return 'Строка должна содержать не менее 2 символов'
@@ -36,8 +38,9 @@ function EditProfilePopup (props) {
         })
 
         setDescriptionError(() => {
-            
-            if (description === '') {
+            if (!isFocused) {
+                return setDescriptionError('');
+            } else if (description === '') {
                 return 'Введите описание'
             } else if (description !== '' && !isDescriptionValid) {
                 return 'Строка должна содержать не менее 2 символов'
@@ -48,7 +51,7 @@ function EditProfilePopup (props) {
             userNameValid: isUserNameValid,
             descriptionValid: isDescriptionValid
         }))
-    }, [name, description, setFormValidity])
+    }, [name, description, setFormValidity, setIsFocused])
 
 
     function handleNameChange (e) {
@@ -71,13 +74,23 @@ function EditProfilePopup (props) {
         props.onClose();
     }
 
+    function handleFocus () {
+        setIsFocused(true);
+    }
+
+    function handleBlur () {
+        setIsFocused(false);
+    }
+
     return (
         <PopupWithForm name='form-profile' title='Редактировать профиль' textButton={props.isLoading ? 'Сохранение...' : 'Сохранить'} 
             isOpen={props.isOpen} onClose={props.onClose} handleSubmit={handleSubmit} isFormValid={formValid}>
             <label htmlFor="popup__input-name">
                 <input 
                 onChange={handleNameChange} 
-                className={`popup__input popup__input_type_name ${!userValidity && 'popup__input_type_error'}`} 
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className={`popup__input popup__input_type_name ${!userValidity && isFocused && 'popup__input_type_error'}`} 
                 id="popup__input-name" 
                 minLength="2" maxLength="40" 
                 name="name" type="text" placeholder="Имя" 
@@ -88,7 +101,9 @@ function EditProfilePopup (props) {
             <label htmlFor="popup__input-profession">
                 <input 
                 onChange={handleDescriptionChange} 
-                className={`popup__input popup__input_type_profession ${!descriptionValidity && 'popup__input_type_error'}`} 
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className={`popup__input popup__input_type_profession ${!descriptionValidity && isFocused && 'popup__input_type_error'}`} 
                 id="popup__input-profession" 
                 minLength="2" maxLength="200" 
                 name="about" type="text" placeholder="Вид деятельности" 

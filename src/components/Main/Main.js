@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../Card/Card.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext';
 import { CurrentCards } from '../../contexts/CurrentCards.js';
+import Header from '../Header/Header.js';
 
 function Main (props) {
 
@@ -9,7 +10,10 @@ function Main (props) {
     const cards = React.useContext(CurrentCards);
     
     return (
-        <main className="main">
+        
+        <>
+            <Header buttonText='Выйти' path='/sign-in' userEmail={props.userEmail} />
+            <main className="main">
             <section className="profile">
                 <div className="profile__avatar-wrapper"
                     onClick={props.onEditAvatar}>
@@ -46,6 +50,7 @@ function Main (props) {
             </section>
 
         </main>
+        </>
     );
 }
 

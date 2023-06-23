@@ -14,10 +14,12 @@ function AddPlacePopup (props) {
     const formValid = titleValidity === true && linkValidity === true;
     const [titleError, setTitleError] = React.useState('');
     const [linkError, setLinkError] = React.useState('');
+    const [isFocused, setIsFocused] = React.useState(false);
 
     React.useEffect(() => {
         setTitle('');
         setLink('');
+        setIsFocused(false);
     }, [props.isOpen])
 
     React.useEffect (() => {
@@ -25,10 +27,12 @@ function AddPlacePopup (props) {
 
         const httpRegex = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
         const isLinkValid = link !== undefined && httpRegex.test(link);
+        
 
         setTitleError(() => {
-            
-            if(title === '') {
+            if (!isFocused) {
+                return setTitleError('');
+            } else if (title === '') {
                 return 'Введите название'
             } else if (title !== '' && !isTitleValid) {
                 return 'Строка должна содержать не менее 2 символов и не более 30 символов'
@@ -36,8 +40,9 @@ function AddPlacePopup (props) {
         })
 
         setLinkError(() => {
-            
-            if (link === '') {
+            if (!isFocused) {
+                return setLinkError('');
+            } else if (link === '') {
                 return 'Введите ссылку на картинку'
             } else if (link !== '' && !isLinkValid) {
                 return 'Введена некорректная ссылка'
@@ -48,7 +53,7 @@ function AddPlacePopup (props) {
             titleValid: isTitleValid,
             linkValid: isLinkValid
         }))
-    }, [title, link, setFormValidity])
+    }, [title, link, setFormValidity, setIsFocused])
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -69,13 +74,23 @@ function AddPlacePopup (props) {
         props.onClose();
     }
 
+    function handleFocus () {
+        setIsFocused(true);
+    }
+
+    function handleBlur () {
+        setIsFocused(false);
+    }
+
     return (
         <PopupWithForm name='form-add-photo' title='Новое место' textButton={props.isLoading ? 'Сохранение...' : 'Создать'} 
         isOpen={props.isOpen} onClose={props.onClose} handleSubmit={handleSubmit} isFormValid={formValid}>
                         <label htmlFor="popup__input-title-pictire">
                             <input 
-                            onChange={handleTitleChange} 
-                            className={`popup__input popup__input_type_title ${!titleValidity && 'popup__input_type_error'}`} 
+                            onChange={handleTitleChange}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur} 
+                            className={`popup__input popup__input_type_title ${!titleValidity && isFocused && 'popup__input_type_error'}`} 
                             id="popup__input-title-pictire" 
                             minLength="2" maxLength="30" 
                             name="title" type="text" placeholder="Название" 
@@ -86,7 +101,7 @@ function AddPlacePopup (props) {
                         <label htmlFor="popup__input-link">
                             <input
                             onChange={handleLinkValue} 
-                            className={`popup__input popup__input_type_link ${!linkValidity && 'popup__input_type_error'}`} 
+                            className={`popup__input popup__input_type_link ${!linkValidity && isFocused && 'popup__input_type_error'}`} 
                             id="popup__input-link" 
                             name="link" type="url" placeholder="Ссылка на картинку" 
                             value={link || ''} 
